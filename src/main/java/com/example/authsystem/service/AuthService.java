@@ -23,7 +23,7 @@ public class AuthService {
     public SignUpResponse signup(SignUpRequest requestDto) {
 
         String encodedPassword = customPasswordEncoder.encode(requestDto.password());
-        User user = User.toEntity(requestDto.username(), encodedPassword, requestDto.nickname(), UserRole.USER);
+        User user = User.toEntity(requestDto.username(), encodedPassword, requestDto.nickname(), UserRole.ROLE_USER);
         User savedUser = userRepository.save(user);
 
         return SignUpResponse.toDto(savedUser);

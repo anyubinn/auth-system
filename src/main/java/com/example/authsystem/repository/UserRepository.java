@@ -3,6 +3,7 @@ package com.example.authsystem.repository;
 import com.example.authsystem.model.entity.User;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Repository;
 
@@ -21,8 +22,8 @@ public class UserRepository {
         return user;
     }
 
-    public User findById(Long id) {
-        return userMap.get(id);
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(userMap.get(id));
     }
 
     public User findByUsername(String username) {
