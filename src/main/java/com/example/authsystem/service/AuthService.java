@@ -1,11 +1,12 @@
 package com.example.authsystem.service;
 
+import com.example.authsystem.exception.CustomException;
+import com.example.authsystem.exception.ErrorCode;
 import com.example.authsystem.model.dto.request.LoginRequest;
 import com.example.authsystem.model.dto.request.SignUpRequest;
 import com.example.authsystem.model.dto.response.LoginResponse;
 import com.example.authsystem.model.dto.response.SignUpResponse;
 import com.example.authsystem.model.entity.User;
-import com.example.authsystem.model.entity.UserRole;
 import com.example.authsystem.repository.UserRepository;
 import com.example.authsystem.security.JwtTokenProvider;
 import com.example.authsystem.security.CustomPasswordEncoder;
@@ -22,8 +23,12 @@ public class AuthService {
 
     public SignUpResponse signup(SignUpRequest requestDto) {
 
+        if (userRepository.existsByUsername(requestDto.username())) {
+            throw new CustomException(ErrorCode.USER_ALREADY_EXISTS);
+        }
+
         String encodedPassword = customPasswordEncoder.encode(requestDto.password());
-        User user = User.toEntity(requestDto.username(), encodedPassword, requestDto.nickname(), UserRole.ROLE_USER);
+        User user = User.toEntity(requestDto.username(), encodedPassword, requestDto.nickname(), requestDto.userRole());
         User savedUser = userRepository.save(user);
 
         return SignUpResponse.toDto(savedUser);
@@ -34,7 +39,7 @@ public class AuthService {
         User user = userRepository.findByUsername(requestDto.username());
 
         if (user == null || !customPasswordEncoder.matches(requestDto.password(), user.getPassword())) {
-            throw new IllegalArgumentException("아이디 또는 비밀번호가 올바르지 않습니다.");
+            throw new CustomException(ErrorCode.INVALID_CREDENTIALS);
         }
         String token = jwtTokenProvider.generateToken(user.getUsername());
 

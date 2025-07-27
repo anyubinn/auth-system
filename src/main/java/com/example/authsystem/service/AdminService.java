@@ -1,5 +1,7 @@
 package com.example.authsystem.service;
 
+import com.example.authsystem.exception.CustomException;
+import com.example.authsystem.exception.ErrorCode;
 import com.example.authsystem.model.dto.response.AdminRoleResponse;
 import com.example.authsystem.model.entity.User;
 import com.example.authsystem.repository.UserRepository;
@@ -13,7 +15,7 @@ public class AdminService {
     private final UserRepository userRepository;
 
     public AdminRoleResponse changeRole(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         user.changeRole();
 
         return AdminRoleResponse.toDto(user);

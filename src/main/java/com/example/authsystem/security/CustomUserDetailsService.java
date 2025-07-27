@@ -1,5 +1,7 @@
 package com.example.authsystem.security;
 
+import com.example.authsystem.exception.CustomException;
+import com.example.authsystem.exception.ErrorCode;
 import com.example.authsystem.model.entity.User;
 import com.example.authsystem.repository.UserRepository;
 import java.util.List;
@@ -20,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username);
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
 
         return new org.springframework.security.core.userdetails.User(

@@ -1,7 +1,6 @@
 package com.example.authsystem.model.entity;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -22,7 +21,7 @@ public class User {
     }
 
     public void changeRole() {
-        this.role = UserRole.ROLE_ADMIN;
+        this.role = UserRole.ADMIN;
     }
 
     public static User toEntity(String username, String password, String nickname, UserRole role) {
