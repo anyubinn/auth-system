@@ -33,7 +33,6 @@ java -jar build/libs/auth-system-0.0.1-SNAPSHOT.jar
 ```
 
 🔗 배포 정보
+Swagger UI: http://13.60.241.91:8080/swagger
 
-Swagger UI: http://13.48.46.183:8080/swagger
-
-API Endpoint (EC2): http://13.48.46.183:8080
+API Endpoint (EC2): http://13.60.241.91:8080
